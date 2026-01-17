@@ -1,111 +1,67 @@
-/* eslint-disable no-unused-vars */
-const Service = require('./Service');
+const db = require('../utils/db');
 
-/**
-* Cria um novo horário
-*
-* horario Horario 
-* no response value expected for this operation
-* */
-const createHorario = ({ horario }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        horario,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+const retrieveHorarios = () => new Promise((resolve, reject) => {
+  db.query("SELECT * FROM Horarios", (err, results) => {
+    if (err) reject(err);
+    else resolve(results);
+  });
+});
+
+const retrieveHorario = ({ id_horario }) => new Promise((resolve, reject) => {
+  db.query("SELECT * FROM Horarios WHERE id_horario = ?", [id_horario], (err, results) => {
+    if (err) reject(err);
+    else resolve(results[0] || {});
+  });
+});
+
+const createHorario = ({ horario }) => new Promise((resolve, reject) => {
+  db.query(
+    "INSERT INTO Horarios (dia_semana, hora_inicio, hora_fim, id_sala, id_professor, id_aula) VALUES (?, ?, ?, ?, ?, ?)",
+    [
+      horario.dia_semana,
+      horario.hora_inicio,
+      horario.hora_fim,
+      horario.id_sala,
+      horario.id_professor,
+      horario.id_aula
+    ],
+    (err, result) => {
+      if (err) reject(err);
+      else resolve({ id_horario: result.insertId });
     }
-  },
-);
-/**
-* Remove horário por ID
-*
-* idUnderscorehorario Integer 
-* no response value expected for this operation
-* */
-const deleteHorario = ({ idUnderscorehorario }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscorehorario,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+  );
+});
+
+const updateHorario = ({ id_horario, horario }) => new Promise((resolve, reject) => {
+  db.query(
+    "UPDATE Horarios SET dia_semana = ?, hora_inicio = ?, hora_fim = ?, id_sala = ?, id_professor = ?, id_aula = ? WHERE id_horario = ?",
+    [
+      horario.dia_semana,
+      horario.hora_inicio,
+      horario.hora_fim,
+      horario.id_sala,
+      horario.id_professor,
+      horario.id_aula,
+      id_horario
+    ],
+    (err) => {
+      if (err) reject(err);
+      else resolve({ message: "Horário atualizado" });
     }
-  },
-);
-/**
-* Obtém horário por ID
-*
-* idUnderscorehorario Integer 
-* no response value expected for this operation
-* */
-const retrieveHorario = ({ idUnderscorehorario }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscorehorario,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
-/**
-* Lista todos os horários
-*
-* returns List
-* */
-const retrieveHorarios = () => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
-/**
-* Atualiza horário por ID
-*
-* idUnderscorehorario Integer 
-* horario Horario 
-* no response value expected for this operation
-* */
-const updateHorario = ({ idUnderscorehorario, horario }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscorehorario,
-        horario,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
+  );
+});
+
+const deleteHorario = ({ id_horario }) => new Promise((resolve, reject) => {
+  db.query("DELETE FROM Horarios WHERE id_horario = ?", [id_horario], (err) => {
+    if (err) reject(err);
+    else resolve({ message: "Horário removido" });
+  });
+});
 
 module.exports = {
-  createHorario,
-  deleteHorario,
-  retrieveHorario,
   retrieveHorarios,
+  retrieveHorario,
+  createHorario,
   updateHorario,
+  deleteHorario
 };

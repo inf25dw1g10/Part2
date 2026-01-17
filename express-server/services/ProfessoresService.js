@@ -1,111 +1,52 @@
-/* eslint-disable no-unused-vars */
-const Service = require('./Service');
+const db = require('../utils/db');
 
-/**
-* Cria um novo professor
-*
-* professor Professor 
-* no response value expected for this operation
-* */
-const createProfessor = ({ professor }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        professor,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+const retrieveProfessores = () => new Promise((resolve, reject) => {
+  db.query("SELECT * FROM Professores", (err, results) => {
+    if (err) reject(err);
+    else resolve(results);
+  });
+});
+
+const retrieveProfessor = ({ id_professor }) => new Promise((resolve, reject) => {
+  db.query("SELECT * FROM Professores WHERE id_professor = ?", [id_professor], (err, results) => {
+    if (err) reject(err);
+    else resolve(results[0] || {});
+  });
+});
+
+const createProfessor = ({ professor }) => new Promise((resolve, reject) => {
+  db.query(
+    "INSERT INTO Professores (nome, email, departamento) VALUES (?, ?, ?)",
+    [professor.nome, professor.email, professor.departamento],
+    (err, result) => {
+      if (err) reject(err);
+      else resolve({ id_professor: result.insertId });
     }
-  },
-);
-/**
-* Remove professor por ID
-*
-* idUnderscoreprofessor Integer 
-* no response value expected for this operation
-* */
-const deleteProfessor = ({ idUnderscoreprofessor }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscoreprofessor,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+  );
+});
+
+const updateProfessor = ({ id_professor, professor }) => new Promise((resolve, reject) => {
+  db.query(
+    "UPDATE Professores SET nome = ?, email = ?, departamento = ? WHERE id_professor = ?",
+    [professor.nome, professor.email, professor.departamento, id_professor],
+    (err) => {
+      if (err) reject(err);
+      else resolve({ message: "Professor atualizado" });
     }
-  },
-);
-/**
-* Obtém professor por ID
-*
-* idUnderscoreprofessor Integer 
-* no response value expected for this operation
-* */
-const retrieveProfessor = ({ idUnderscoreprofessor }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscoreprofessor,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
-/**
-* Lista todos os professores
-*
-* returns List
-* */
-const retrieveProfessores = () => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
-/**
-* Atualiza professor por ID
-*
-* idUnderscoreprofessor Integer 
-* professor Professor 
-* no response value expected for this operation
-* */
-const updateProfessor = ({ idUnderscoreprofessor, professor }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscoreprofessor,
-        professor,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
+  );
+});
+
+const deleteProfessor = ({ id_professor }) => new Promise((resolve, reject) => {
+  db.query("DELETE FROM Professores WHERE id_professor = ?", [id_professor], (err) => {
+    if (err) reject(err);
+    else resolve({ message: "Professor removido" });
+  });
+});
 
 module.exports = {
-  createProfessor,
-  deleteProfessor,
-  retrieveProfessor,
   retrieveProfessores,
+  retrieveProfessor,
+  createProfessor,
   updateProfessor,
+  deleteProfessor
 };

@@ -1,111 +1,52 @@
-/* eslint-disable no-unused-vars */
-const Service = require('./Service');
+const db = require('../utils/db');
 
-/**
-* Cria uma nova sala
-*
-* sala Sala 
-* no response value expected for this operation
-* */
-const createSala = ({ sala }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        sala,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+const retrieveSalas = () => new Promise((resolve, reject) => {
+  db.query("SELECT * FROM Salas", (err, results) => {
+    if (err) reject(err);
+    else resolve(results);
+  });
+});
+
+const retrieveSala = ({ id_sala }) => new Promise((resolve, reject) => {
+  db.query("SELECT * FROM Salas WHERE id_sala = ?", [id_sala], (err, results) => {
+    if (err) reject(err);
+    else resolve(results[0] || {});
+  });
+});
+
+const createSala = ({ sala }) => new Promise((resolve, reject) => {
+  db.query(
+    "INSERT INTO Salas (nome, capacidade) VALUES (?, ?)",
+    [sala.nome, sala.capacidade],
+    (err, result) => {
+      if (err) reject(err);
+      else resolve({ id_sala: result.insertId });
     }
-  },
-);
-/**
-* Remove sala por ID
-*
-* idUnderscoresala Integer 
-* no response value expected for this operation
-* */
-const deleteSala = ({ idUnderscoresala }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscoresala,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+  );
+});
+
+const updateSala = ({ id_sala, sala }) => new Promise((resolve, reject) => {
+  db.query(
+    "UPDATE Salas SET nome = ?, capacidade = ? WHERE id_sala = ?",
+    [sala.nome, sala.capacidade, id_sala],
+    (err) => {
+      if (err) reject(err);
+      else resolve({ message: "Sala atualizada" });
     }
-  },
-);
-/**
-* Obtém sala por ID
-*
-* idUnderscoresala Integer 
-* no response value expected for this operation
-* */
-const retrieveSala = ({ idUnderscoresala }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscoresala,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
-/**
-* Lista todas as salas
-*
-* returns List
-* */
-const retrieveSalas = () => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
-/**
-* Atualiza sala por ID
-*
-* idUnderscoresala Integer 
-* sala Sala 
-* no response value expected for this operation
-* */
-const updateSala = ({ idUnderscoresala, sala }) => new Promise(
-  async (resolve, reject) => {
-    try {
-      resolve(Service.successResponse({
-        idUnderscoresala,
-        sala,
-      }));
-    } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
-    }
-  },
-);
+  );
+});
+
+const deleteSala = ({ id_sala }) => new Promise((resolve, reject) => {
+  db.query("DELETE FROM Salas WHERE id_sala = ?", [id_sala], (err) => {
+    if (err) reject(err);
+    else resolve({ message: "Sala removida" });
+  });
+});
 
 module.exports = {
-  createSala,
-  deleteSala,
-  retrieveSala,
   retrieveSalas,
+  retrieveSala,
+  createSala,
   updateSala,
+  deleteSala
 };
