@@ -19,7 +19,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Aluno'
+                  $ref: "#/components/schemas/Aluno"
                 type: array
           description: Lista de alunos
       summary: Lista todos os alunos
@@ -33,9 +33,9 @@ paths:
           application/json:
             examples:
               exemplo1:
-                $ref: '#/components/examples/AlunoExample01'
+                $ref: "#/components/examples/AlunoExample01"
             schema:
-              $ref: '#/components/schemas/Aluno'
+              $ref: "#/components/schemas/Aluno"
         required: true
       responses:
         "201":
@@ -95,7 +95,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Aluno'
+              $ref: "#/components/schemas/Aluno"
         required: true
       responses:
         "200":
@@ -113,7 +113,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Professor'
+                  $ref: "#/components/schemas/Professor"
                 type: array
           description: Lista de professores
       summary: Lista todos os professores
@@ -126,7 +126,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Professor'
+              $ref: "#/components/schemas/Professor"
         required: true
       responses:
         "201":
@@ -186,7 +186,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Professor'
+              $ref: "#/components/schemas/Professor"
         required: true
       responses:
         "200":
@@ -204,7 +204,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Sala'
+                  $ref: "#/components/schemas/Sala"
                 type: array
           description: Lista de salas
       summary: Lista todas as salas
@@ -217,7 +217,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Sala'
+              $ref: "#/components/schemas/Sala"
         required: true
       responses:
         "201":
@@ -277,7 +277,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Sala'
+              $ref: "#/components/schemas/Sala"
         required: true
       responses:
         "200":
@@ -295,7 +295,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Aula'
+                  $ref: "#/components/schemas/Aula"
                 type: array
           description: Lista de aulas
       summary: Lista todas as aulas
@@ -308,7 +308,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Aula'
+              $ref: "#/components/schemas/Aula"
         required: true
       responses:
         "201":
@@ -368,7 +368,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Aula'
+              $ref: "#/components/schemas/Aula"
         required: true
       responses:
         "200":
@@ -386,7 +386,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Horario'
+                  $ref: "#/components/schemas/Horario"
                 type: array
           description: Lista de horários
       summary: Lista todos os horários
@@ -399,7 +399,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Horario'
+              $ref: "#/components/schemas/Horario"
         required: true
       responses:
         "201":
@@ -459,7 +459,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Horario'
+              $ref: "#/components/schemas/Horario"
         required: true
       responses:
         "200":
