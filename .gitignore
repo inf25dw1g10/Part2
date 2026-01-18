@@ -23,3 +23,6 @@ express-server/.openapi-generator/
 
 # VS Code
 .vscode/
+.idea/
+node_modules/sqlstring/lib/SqlString.js
+node_modules/sqlstring/lib/SqlString.js
