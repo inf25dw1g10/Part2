@@ -8,8 +8,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Igor1234!
       MYSQL_DATABASE: school
-      MYSQL_USER: root
-      MYSQL_PASSWORD: Igor1234!
     ports:
       - "3306:3306"
     volumes:
