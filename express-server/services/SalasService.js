@@ -1,52 +1,67 @@
 const db = require('../utils/db');
 
-const retrieveSalas = () => new Promise((resolve, reject) => {
-  db.query("SELECT * FROM Salas", (err, results) => {
-    if (err) reject(err);
-    else resolve(results);
+const createSala = (params) => new Promise((resolve, reject) => {
+  const sala = params.sala || params.body || params;
+
+  if (!sala.nome || !sala.capacidade) {
+    return reject({ code: 400, error: "Campos obrigatórios ausentes: nome, capacidade" });
+  }
+
+  const sql = "INSERT INTO Salas (nome, capacidade) VALUES (?, ?)";
+  const values = [sala.nome, sala.capacidade];
+
+  db.query(sql, values, (err, result) => {
+    if (err) return reject({ code: 500, error: err.message });
+
+    resolve({
+      id_sala: result.insertId,
+      nome: sala.nome,
+      capacidade: sala.capacidade
+    });
+  });
+});
+
+const deleteSala = ({ id_sala }) => new Promise((resolve, reject) => {
+  const sql = "DELETE FROM Salas WHERE id_sala = ?";
+  db.query(sql, [id_sala], (err) => {
+    if (err) return reject(err);
+    resolve({ message: "Sala removida" });
   });
 });
 
 const retrieveSala = ({ id_sala }) => new Promise((resolve, reject) => {
-  db.query("SELECT * FROM Salas WHERE id_sala = ?", [id_sala], (err, results) => {
-    if (err) reject(err);
-    else resolve(results[0] || {});
+  const sql = "SELECT * FROM Salas WHERE id_sala = ?";
+  db.query(sql, [id_sala], (err, results) => {
+    if (err) return reject(err);
+    resolve(results[0] || {});
   });
 });
 
-const createSala = ({ sala }) => new Promise((resolve, reject) => {
-  db.query(
-    "INSERT INTO Salas (nome, capacidade) VALUES (?, ?)",
-    [sala.nome, sala.capacidade],
-    (err, result) => {
-      if (err) reject(err);
-      else resolve({ id_sala: result.insertId });
-    }
-  );
+const retrieveSalas = () => new Promise((resolve, reject) => {
+  const sql = "SELECT * FROM Salas";
+  db.query(sql, (err, results) => {
+    if (err) return reject(err);
+    resolve(results);
+  });
 });
 
-const updateSala = ({ id_sala, sala }) => new Promise((resolve, reject) => {
-  db.query(
-    "UPDATE Salas SET nome = ?, capacidade = ? WHERE id_sala = ?",
-    [sala.nome, sala.capacidade, id_sala],
-    (err) => {
-      if (err) reject(err);
-      else resolve({ message: "Sala atualizada" });
-    }
-  );
-});
+const updateSala = (params) => new Promise((resolve, reject) => {
+  const sala = params.sala || params.body || params;
+  const { id_sala } = params;
 
-const deleteSala = ({ id_sala }) => new Promise((resolve, reject) => {
-  db.query("DELETE FROM Salas WHERE id_sala = ?", [id_sala], (err) => {
-    if (err) reject(err);
-    else resolve({ message: "Sala removida" });
+  const sql = "UPDATE Salas SET nome = ?, capacidade = ? WHERE id_sala = ?";
+  const values = [sala.nome, sala.capacidade, id_sala];
+
+  db.query(sql, values, (err) => {
+    if (err) return reject(err);
+    resolve({ message: "Sala atualizada" });
   });
 });
 
 module.exports = {
-  retrieveSalas,
-  retrieveSala,
   createSala,
+  deleteSala,
+  retrieveSala,
+  retrieveSalas,
   updateSala,
-  deleteSala
 };
