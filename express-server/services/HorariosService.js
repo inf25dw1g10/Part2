@@ -3,13 +3,12 @@ const db = require('../utils/db');
 const createHorario = (params) => new Promise((resolve, reject) => {
   const horario = params.horario || params.body || params;
 
-  if (!horario.id_aula || !horario.dia || !horario.hora_inicio || !horario.hora_fim) {
-    return reject({ code: 400, error: "Campos obrigatórios ausentes: id_aula, dia, hora_inicio, hora_fim" });
+  if (!horario.id_aula || !horario.id_professor || !horario.id_sala || !horario.dia_semana || !horario.hora_inicio || !horario.hora_fim) {
+    return reject({ code: 400, error: "Campos obrigatórios ausentes: id_aula, id_professor, id_sala, dia_semana, hora_inicio, hora_fim" });
   }
 
-  const sql = "INSERT INTO Horarios (id_aula, dia, hora_inicio, hora_fim) VALUES (?, ?, ?, ?)";
-  const values = [horario.id_aula, horario.dia, horario.hora_inicio, horario.hora_fim];
-
+  const sql = "INSERT INTO Horarios (id_aula, id_professor, id_sala, dia_semana, hora_inicio, hora_fim) VALUES (?, ?, ?, ?, ?, ?)";
+  const values = [horario.id_aula, horario.id_professor, horario.id_sala, horario.dia_semana, horario.hora_inicio, horario.hora_fim];
   db.query(sql, values, (err, result) => {
     if (err) return reject({ code: 500, error: err.message });
 
@@ -48,8 +47,8 @@ const updateHorario = (params) => new Promise((resolve, reject) => {
   const horario = params.horario || params.body || params;
   const { id_horario } = params;
 
-  const sql = "UPDATE Horarios SET id_aula = ?, dia = ?, hora_inicio = ?, hora_fim = ? WHERE id_horario = ?";
-  const values = [horario.id_aula, horario.dia, horario.hora_inicio, horario.hora_fim, id_horario];
+  const sql = "UPDATE Horarios SET id_aula = ?, id_professor = ?, id_sala = ?, dia_semana = ?, hora_inicio = ?, hora_fim = ? WHERE id_horario = ?";
+  const values = [horario.id_aula, horario.dia_semana, horario.hora_inicio, horario.hora_fim, id_horario];
 
   db.query(sql, values, (err) => {
     if (err) return reject(err);
