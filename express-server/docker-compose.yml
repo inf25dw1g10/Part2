@@ -2,12 +2,9 @@ version: "3.9"
 
 services:
   mysql-db:
-    image: mysql:8.0
+    build: ./mysql
     container_name: mysql-db
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: Igor1234!
-      MYSQL_DATABASE: school
     ports:
       - "3306:3306"
     volumes:
