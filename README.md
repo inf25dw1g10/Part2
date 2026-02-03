@@ -161,22 +161,22 @@ docker compose up -d
 ## 9. Utilização de Inteligência Artificial
 
 Foi utilizada uma ferramenta de Inteligência Artificial como apoio ao desenvolvimento do projeto, respeitando os princípios de transparência académica.
-Âmbito da Utilização
+### Âmbito da Utilização
 A IA foi utilizada exclusivamente como suporte técnico e conceptual, nomeadamente para:
-esclarecimento de conceitos
-validação de sintaxe
-apoio na estruturação inicial de código
-Integração no Projeto
+- esclarecimento de conceitos
+- validação de sintaxe
+- apoio na estruturação inicial de código
+### Integração no Projeto
 Todo o código gerado foi:
-analisado
-compreendido
-adaptado manualmente
-integrado pelo aluno
-Tarefas com Apoio de IA
-Geração de massa de dados SQL (30 registos por tabela)
-Apoio na definição do schema.sql
-Validação da especificação OpenAPI (YAML)
-Auxílio na configuração dos ficheiros Dockerfile e docker-compose.yml
+- analisado
+- compreendido
+- adaptado manualmente
+- integrado pelo aluno
+### Tarefas com Apoio de IA
+- Geração de massa de dados SQL (30 registos por tabela)
+- Apoio na definição do schema.sql
+- Validação da especificação OpenAPI (YAML)
+- Auxílio na configuração dos ficheiros Dockerfile e docker-compose.yml
 
 ##  10. Conclusão
 
@@ -184,4 +184,4 @@ Este projeto demonstra a aplicação prática de metodologias modernas de desenv
 
 A utilização do OpenAPI Generator permitiu manter consistência entre o design e a implementação, enquanto o Docker garantiu um ambiente controlado e replicável.
 
-O resultado final é uma API REST funcional, escalável, devidamente documentada e preparada para execução em ambiente multi-container, cumprindo todos os requisitos definidos para a avaliação.
+O resultado final é uma API REST funcional, escalável, devidamente documentada e preparada para execução em ambiente multi-container.
